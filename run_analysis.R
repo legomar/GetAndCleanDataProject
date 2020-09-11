@@ -1,6 +1,7 @@
+  library(dbplyr)
 # Download and extract data
   fileURL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-  download.file(fileURL, "data.zip", method="curl")
+  download.file(fileURL, destfile="data.zip")
   unzip("data.zip") 
 
   #Read data into R
@@ -38,11 +39,14 @@
   names(Data)<-gsub("^t", "Time", names(Data))
   names(Data)<-gsub("^f", "Frequency", names(Data))
   names(Data)<-gsub("tBody", "TimeBody", names(Data))
-  names(Data)<-gsub("-mean()", "Mean", names(Data)
+  names(Data)<-gsub("-mean()", "Mean", names(Data))
   names(Data)<-gsub("-std()", "STD", names(Data))
   names(Data)<-gsub("-freq()", "Frequency", names(Data))
   names(Data)<-gsub("angle", "Angle", names(Data))
   names(Data)<-gsub("gravity", "Gravity", names(Data))
   
   #Step 5: From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
-  Data <- TidyData %>%    group_by(subject, activity) %>%    summarise_all(funs(mean))
+  Data <- TidyData %>%    group_by(subject, activity) %>%    summarise_all(funs(mean))  
+  write.table(Data, "Data.txt", row.name=FALSE)
+  
+  
